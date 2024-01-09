@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetAlert Mascotas</title>
+    <link rel="stylesheet" href="Animacion.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.css">
+</head>
+<body>
+    <div class="container">
+        <img class="icon" src="icono.jpg" alt="Icono de la aplicación">
+        <h1>Bienvenido</h1>
+        <h1>Cervantes Sánchez Sarai</h1>
+        <h1>Hernández Ramírez Ismael</h1>
+        <h1>Martínez Rosemberg Pamela Maureen</h1>
+        <h1>Pacheco Reyes Gabriela Aislinn</h1>
+        <div id="datePickerContainer">
+            <input type="text" id="datePicker">
+        </div>
+        <div id="careOptions">
+            <button class="careOption" value="Vacunación"> Vacunación</button>
+            <button class="careOption" value="Alimentación"> Alimentación</button>
+            <button class="careOption" value="Paseo"> Paseo</button>
+            <button class="careOption" value="Baño"> Baño</button>
+        </div>
+        <div id="schedule"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
+    <script>
+        // Resaltar el día actual
+        var today = new Date();
+        var todayString = today.toISOString().split('T')[0];
+        document.getElementById('datePicker').value = todayString;
+
+        // Inicializar Flatpickr y abrir el calendario automáticamente
+        flatpickr("#datePicker", {
+            defaultDate: today,
+            inline: true
+        });
+
+        // Asignar evento clic a los botones
+        var careOptions = document.querySelectorAll('.careOption');
+        careOptions.forEach(function (button) {
+            button.addEventListener('click', function () {
+                scheduleActivity(button.value);
+            });
+        });
+
+        function scheduleActivity(activity) {
+            var selectedDate = new Date(document.getElementById('datePicker').value);
+            if (isNaN(selectedDate.getTime())) {
+                alert("Selecciona una fecha válida.");
+                return;
+            }
+
+            var scheduleContainer = document.getElementById('schedule');
+            var scheduleItem = document.createElement('div');
+            scheduleItem.innerHTML = `${activity} - ${formatDate(selectedDate)}`;
+            scheduleContainer.appendChild(scheduleItem);
+        }
+
+        function formatDate(date) {
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('es-ES', options);
+        }
+    </script>
+</body>
+</html>
